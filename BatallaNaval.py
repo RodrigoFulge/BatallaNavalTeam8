@@ -1,7 +1,10 @@
-import random
-#Versión 2.0 - Agregada función de ataque y acierto a barcos. Aun falta refinar para que no haya errores con que se generen dos barcos en la misma coordenada
-    #Además, se han separado la creacion de tablero y creación de barcos en dos funciones diferentes
-Aciertos = 0
+import random, math
+#Versión 3.0 - Agregado contador de intentos y hacer que el juego se detenga ya sea al perder todas las vidas
+#o acertar a todos los barcos sin terminar el programa de inmediato, sino hasta que el usuario
+#presione una tecla. Igual algo de equilibrio y filosofía de programación
+BalanceIntentos = 1.5 #Alguien sabio dijo que las variables de balance de juego deberían estar siempre
+#puestas por separado, en un punto facil de encontrar para que sean rapidas de ajustar y probar
+#Se que no es de tanta utilidad en un trabajo tan simple como este pero es buena práctica supongo
 class BatallaNaval:
     
     def __init__(self,NumShips,BoardSize):
@@ -47,8 +50,10 @@ class BatallaNaval:
 
     def Fallo(self):
         pass
-
+Aciertos = 0
 NumShips = int(input("¿Cuántos barcos habrá?"))
+IntentosRestantes = math.ceil(NumShips+(NumShips*BalanceIntentos)) #Define la cantidad de intentos. Será el número de barcos por 1.5. Aun así, se puede modificar libremente con la variable al inicio
+print(IntentosRestantes)
 BoardSize = int(input("¿De que tamaño será el tablero?"))
 Juego = BatallaNaval(NumShips,BoardSize) #Inicializa el juego
 Board = BatallaNaval.Tablero(Juego) #Inicia el tablero. 
@@ -56,7 +61,7 @@ Barcos = BatallaNaval.SetBarcos(Juego) #Diccionario de las coordenadas.
 for i in range(BoardSize+1):
     print(Board[i])
 print(Barcos) #Imprime el diccionario retornado por Tablero    
-while Aciertos != NumShips: #Mientras el número de aciertos sea menor al número de barcos, el juego seguirá
+while Aciertos != NumShips and IntentosRestantes != 0: #Mientras el número de aciertos sea menor al número de barcos, el juego seguirá
     Golpe = False
     IntentoX = int(input("Ingresa la coordenada X de tu ataque: "))
     IntentoX += 1
@@ -76,10 +81,18 @@ while Aciertos != NumShips: #Mientras el número de aciertos sea menor al númer
     if Golpe == True:
         Aciertos += 1
         Board=BatallaNaval.Acierto_Barco(IntentoX,IntentoY,Board) #Actualiza el tablero mediante la función
+    else:
+        IntentosRestantes -= 1
+        print(f"Intentos restantes: {IntentosRestantes}")
 
     for i in range(BoardSize+1): #Imprime el tablero actualizado
             print(Board[i])
+if Aciertos == 5:
+    print("Ganaste!! Derribaste todos esos barcos. Eres todo un criminal de guerra!! Tomar todas esas vidas debe hacerte sentir imponente!!")
 
+if IntentosRestantes == 0:
+    print("No derribaste todos los barcos. Tus soldados han sacrificado sus vidas y aun así no has logrado defender su patria. Sus muertes han sido en vano, y tus tierras han sido tomadas. Felicidades")
+input("Presiona cualquier tecla para Salir")
     
 
 
