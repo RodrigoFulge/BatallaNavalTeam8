@@ -1,10 +1,7 @@
 import random, math
-#Versión 3.0 - Agregado contador de intentos y hacer que el juego se detenga ya sea al perder todas las vidas
-#o acertar a todos los barcos sin terminar el programa de inmediato, sino hasta que el usuario
-#presione una tecla. Igual algo de equilibrio y filosofía de programación
-BalanceIntentos = 1.5 #Alguien sabio dijo que las variables de balance de juego deberían estar siempre
-#puestas por separado, en un punto facil de encontrar para que sean rapidas de ajustar y probar
-#Se que no es de tanta utilidad en un trabajo tan simple como este pero es buena práctica supongo
+#Versión 4.0 - Removido texto adicional de los comentarios.
+BalanceIntentos = 1.5 
+
 class BatallaNaval:
     
     def __init__(self,NumShips,BoardSize):
@@ -72,7 +69,6 @@ while Aciertos != NumShips and IntentosRestantes != 0: #Mientras el número de a
         print(indice)
         if Board[IntentoX][IntentoY] == "X": #Si hay un barco, setea Golpe a True para que ejecute la función de acierto más abajo
             Golpe = True
-            print("Acertaste a un barco!!")
         else:
             print("No has acertado")
         if Board[IntentoX][IntentoY] == "F":  #Impide ganar otro punto si ya se había acertado a un barco en esa coordenada
@@ -80,6 +76,7 @@ while Aciertos != NumShips and IntentosRestantes != 0: #Mientras el número de a
 
     if Golpe == True:
         Aciertos += 1
+        print("Acertaste a un barco!!")
         Board=BatallaNaval.Acierto_Barco(IntentoX,IntentoY,Board) #Actualiza el tablero mediante la función
     else:
         IntentosRestantes -= 1
